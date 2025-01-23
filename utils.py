@@ -32,8 +32,8 @@ def word_tokenizer(sentence):
     Strip punctuation, lowercase, and split a sentence 
     into words; return words in a list.
     """
-    tokenize.w
-
+    words = tokenize.word_tokenize(sentence)
+    return [word.lower() for word in words if has_alphabetic(word)]
 
 def build_ngrams(tokens, n):
     """
