@@ -5,8 +5,9 @@ from nltk.data import find
 try:
     find('tokenizers/punkt')
 except LookupError:
-    download('punkt')
+    download('punkt_tab')
 
+download('punkt_tab')
 
 def has_alphabetic(word):
     """
@@ -22,7 +23,8 @@ def sentence_tokenizer(text):
     NOTE: replaces "smart" quotations, apostrophes to more accurately
     split sentences
     """
-    pass
+    text = text.replace("“", '"').replace("”", '"').replace("’", "'")
+    return tokenize.sent_tokenize(text)
 
 
 def word_tokenizer(sentence):
@@ -30,7 +32,7 @@ def word_tokenizer(sentence):
     Strip punctuation, lowercase, and split a sentence 
     into words; return words in a list.
     """
-    pass
+    tokenize.w
 
 
 def build_ngrams(tokens, n):
