@@ -52,8 +52,16 @@ def build_ngrams(tokens, n):
         ('mat', '</s>', '</s>'),
     ]
     """
-    pass
+    # adding start and end tokens
+    for _ in range(n-1):
+        tokens.append('</s>')
+        tokens.insert(0, '<s>')
 
+    sequences = []
+    for i in range(n):
+        sequences.append(tokens[i:])
+
+    return zip(*sequences)
 
 def ngram_generator(text, n):
     """
