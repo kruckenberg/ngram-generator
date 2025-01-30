@@ -5,12 +5,15 @@ def main():
     n = 3
 
     # choose texts to include in training
-    gatsby = True
+    dev = True
+    gatsby = False
     pride_prejudice = False
     sherlock = False
 
     # build corpus list
     training_corpus = []
+    if dev:
+        training_corpus.append('./train/dev.txt')
     if gatsby:
         training_corpus.append('./train/great_gatsby.txt')
     if pride_prejudice:
