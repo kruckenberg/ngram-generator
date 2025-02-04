@@ -1,4 +1,6 @@
-from utils import ngram_generator
+from itertools import accumulate
+from random import choices
+from utils import ngram_generator, word_tokenizer
 
 class TokenNode:
     """
@@ -45,5 +47,38 @@ class NgramLM:
         node.count += 1 # increment leaf node    
 
 
+    def get_next_word(self, text):
+        tokens = word_tokenizer(text)
+        seed_tokens = tokens[-(self.n - 1):]
+        node = self.root
+
+        for word in seed_tokens:
+            node = node.get_child(word) or self.get_random_child()
+        
+        vocabulary, cumulative_counts = self.get_word_count_lists(node)
+        return choices(vocabulary, cum_weights=cumulative_counts)[0]
+        
+    
+    def get_random_child(self):
+        vocabulary, cumulative_counts = self.get_word_count_lists(self.root)
+        # make a weighted choice
+        choice = choices(vocabulary, cum_weights=cumulative_counts)[0]
+        return self.root.get_child(choice)
+    
+    def get_word_count_lists(self, node):
+        vocabulary = sorted(node.children.values(), key=lambda node: node.count, reverse=True)
+        words = []
+        counts = []
+        for word_token in vocabulary:
+            words.append(word_token.word)
+            counts.append(word_token.count)
+
+        return words, list(accumulate(counts))
+    
     def generate(self, length, seed_text=None):
-        pass
+        generated_text = seed_text
+
+        for _ in range(length):
+            generated_text += " " + self.get_next_word(generated_text)
+        
+        return generated_text
