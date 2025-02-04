@@ -2,13 +2,13 @@ from model import NgramLM
 
 def main():
     # set n-gram size
-    n = 3
+    n = 4
 
     # choose texts to include in training
-    dev = True
-    gatsby = False
-    pride_prejudice = False
-    sherlock = False
+    dev = False
+    gatsby = True
+    pride_prejudice = True
+    sherlock = True
 
     # build corpus list
     training_corpus = []
@@ -28,6 +28,15 @@ def main():
             text = f.read()
         print(f'Training on {path}')
         model.train(text)
+
+    generate_text = True
+    length = 20
+    while generate_text:
+        seed = input('prompt: ')
+        if not seed:
+            generate_text = False
+            break
+        print(model.generate(length, seed))
 
 if __name__ == '__main__':
     main()
